@@ -1,9 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
-    private AudioSource audioSource;
 
+    [SerializeField] float levelLoadDelay = 2f;
+    [SerializeField] AudioClip successSFX;
+    [SerializeField] AudioClip crashSFX;
+    [SerializeField] ParticleSystem successParticles;
+    [SerializeField] private ParticleSystem crashParticles;
+    
+    AudioSource audioSource;
+
+    private bool isControllable = true;
+    
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -11,28 +21,66 @@ public class CollisionHandler : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
+
+        if (!isControllable)
+        {
+            return; // 아무것도 하지 않는다.
+        }
+            
         switch (other.gameObject.tag)
         {
             case "Friendly":
                 Debug.Log("Everything is looking good");
                 break;
-            case "Fuel":
-                Debug.Log("Why did you pick me up, I'm not in this game");
-                break;
             case "Finished":
-                Debug.Log("You're all done, Welcome to our country");
+                StartSuccessSequence();
                 break;
             default:
-                Debug.Log("You crashed dummy");
+                StartCrashSequence();
                 break;
         }
     }
 
-    private void ActionList()
+    private void StartSuccessSequence()
     {
-        
+        isControllable = false;
+        audioSource.Stop(); // 모든 효과음을 중지하고
+        audioSource.PlayOneShot(successSFX); // successSFX 효과를 출력한다.
+        successParticles.Play();
+        GetComponent<Movement>().enabled = false; // Movement.cs도 같은 오브젝트 안의 스크립트이기 때문에 호출 가능
+        Invoke("LoadNextLevel", levelLoadDelay);
     }
-    
+
+    private void StartCrashSequence()
+    {
+        isControllable = false;
+        audioSource.Stop();
+        audioSource.PlayOneShot(crashSFX);
+        crashParticles.Play();
+        GetComponent<Movement>().enabled = false; // Movement.cs도 같은 오브젝트 안의 스크립트이기 때문에 호출 가능
+        Invoke("ReloadLevel", levelLoadDelay);
+    }
+
+    private void ReloadLevel()
+    {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentScene);
+    }
+
+    private void LoadNextLevel()
+    {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        int nextScene = currentScene + 1;
+        
+        if (nextScene == SceneManager.sceneCountInBuildSettings)
+        {
+            nextScene = 0;
+        }
+        SceneManager.LoadScene(nextScene);
+ 
+
+    }
+
     private void ActionFriendly()
     {
         if (!audioSource.isPlaying)
@@ -40,15 +88,4 @@ public class CollisionHandler : MonoBehaviour
             audioSource.Play();
         }
     }
-
-    private void ActionFuel()
-    {
-        
-    }
-
-    private void ActionFinished()
-    {
-        
-    }
-    
 }

@@ -8,6 +8,7 @@ TagManager:
   - Friendly
   - Fuel
   - Finished
+  - Ground
   layers:
   - Default
   - TransparentFX
