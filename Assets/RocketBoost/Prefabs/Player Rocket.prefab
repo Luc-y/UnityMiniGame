@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8268534666016518384}
   - component: {fileID: 135351137085704999}
   - component: {fileID: 6323536514454645528}
+  - component: {fileID: 2082576084198630756}
   m_Layer: 0
   m_Name: Player Rocket
   m_TagString: Untagged
@@ -55,7 +56,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.664
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -304,6 +305,18 @@ MonoBehaviour:
   crashSFX: {fileID: 8300000, guid: 142816ccfc520014f96383164dd4e538, type: 3}
   successParticles: {fileID: 4876327357848785123}
   crashParticles: {fileID: 4245655631190221734}
+--- !u!114 &2082576084198630756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369847784901675198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eabbe4e69edef24a80d12c8bd57882c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1415019432701957619
 PrefabInstance:
   m_ObjectHideFlags: 0

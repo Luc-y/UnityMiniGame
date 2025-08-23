@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
@@ -11,18 +12,37 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] private ParticleSystem crashParticles;
     
     AudioSource audioSource;
-
-    private bool isControllable = true;
+    
+    bool isControllable = true;
+    bool isCollidable = true;
     
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
+
+    private void Update()
+    {
+        RespondToDebugKeys();
+    }
+
+    private void RespondToDebugKeys()
+    {
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            LoadNextLevel();
+        }
+        else if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            isCollidable = !isCollidable; // false로 변경 = 콜리젼 온/오프
+            Debug.Log("c Key was Pressed");
+        }
+    }
     
     private void OnCollisionEnter(Collision other)
     {
 
-        if (!isControllable)
+        if (!isControllable || !isCollidable)
         {
             return; // 아무것도 하지 않는다.
         }
